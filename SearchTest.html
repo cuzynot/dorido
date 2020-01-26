@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   
     <style type="text/css">
       #map {
@@ -27,9 +29,14 @@
         background-image: url('https://wallpaperplay.com/walls/full/d/1/c/26997.jpg');
         height: 15%;
         left: 0;
-        top: 0%;
+        top: 0;
         width: 100%;
         background-size: cover;
+      }
+      .w3-display-middle {
+        top: 10%;
+        left: 7%;
+        height: 15%;
       }
       .form-controlmy-0py-1 {
         position: fixed;
@@ -67,10 +74,10 @@
       }
 
       .topnav .search-container button {
-        position: fixed;
-        padding: 6px 10px;
-        top: 5%;
-        left: 61%;
+        position: absolute;
+        padding: 6px;
+        margin-top: 8%;
+        left: 72%;
         background: #ddd;
         font-size: 17px;
         border: none;
@@ -103,25 +110,21 @@
     <div id="map"></div>
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
       <div class="w3-display-middle">
-        <h1 class="w3-jumbo w3-animate-top">Doridos</h1>
-        <hr class="w3-border-grey" style="margin:auto;width:40%">
-        <p class="w3-large w3-center">Shopping Conveniently</p>
+        <h3 class="w3-jumbo-w3-animate-top">Doridos</h3>
+        <hr class="w3-border-grey" style="margin:0;width:40%">
+        <p class="w3-large-w3-center">Shopping Conveniently</p>
       </div>
     <div class="input-group md-form form-sm form-1 pl-0"></div>
       <div class="input-group-prepend"></div>
-
-    <!-- <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-        <div class="image">
-          <a class="logo" href="#"><img src="Picture1.png"></a>
-          </div>
-        </nav> -->
+    <ul id='list'></ul>
 
     <div class="topnav">
       <div class="search-container" class="img-responsive">
-        <form>
-          <input type="text" placeholder="Search.." id='search'>
-          <button type='button' class='fa fa-search' onclick="username()"></button>
-        </form>
+    <form onsubmit="searchAgain()" action="javascript:void(0)">
+      <input type="text" placeholder="Search.." id='search' onkeydown = "if (event.keyCode == 13){
+                        document.getElementById('fa fa-search').click()}" >
+      <button type='button' id='btn' class='fa fa-search' onclick="searchAgain()"></button>
+    </form>
       </div>
     </div>
 
@@ -130,6 +133,12 @@
 var map;
 var service;
 var request;
+var data;
+var markers = [];
+
+$(document).ready(function () {
+postData(sessionStorage.myValue);
+});
 
 function initMap() {
   var nothardcoded = new google.maps.LatLng(43.2609,-74.9192);
@@ -147,14 +156,14 @@ function initMap() {
             };
 
             map.setCenter(new google.maps.LatLng(pos.lat,pos.lng));
-            var marker = new google.maps.Marker({
-              position: pos,
-              map: map,
-              title: "Current Location",
-              animation: google.maps.Animation.DROP
-            });
+            // var marker = new google.maps.Marker({
+            //   position: pos,
+            //   map: map,
+            //   title: "Current Location",
+            //   animation: google.maps.Animation.DROP
+            // });
             
-            search('walmart', map.center);
+            search(sessionStorage.myValue, map.center);
           });
   }
 
@@ -171,22 +180,42 @@ function search(loca, currentLoca){
   service.textSearch(request, callback);
 }
 
-function createMarker(place) {
-
-  new google.maps.Marker({
-      position: place.geometry.location,
-      map: map,
-      animation: google.maps.Animation.DROP
-  });
-}
-
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
-      var place = results[i];
-      createMarker(results[i]);
+      var place = new google.maps.Marker({
+      position: results[i].geometry.location,
+      map: map,
+      animation: google.maps.Animation.DROP
+  });
+      markers.push(place);
     }
   }
+}
+
+function searchAgain(){
+  setMapOnAll(null);
+  markers=[];
+  search(document.getElementById('search').value, map.center);
+}
+
+  function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+    }
+  }
+
+function postData(input) {
+    $.ajax({
+        type: "POST",
+        url: "/webcrawler.py",
+        data: { param: input },
+        success: callbackFunc
+    });
+}
+
+function callbackFunc(response) {
+    data = response;
 }
     </script>
 

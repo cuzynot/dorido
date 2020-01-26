@@ -104,9 +104,10 @@ body, html {height: 100%}
 
 <div class="topnav">
   <div class="search-container" class="img-responsive">
-    <form>
-      <input type="text" placeholder="Search.." id='search'>
-      <button type='button' class='fa fa-search' onclick="username()"></button>
+    <form onsubmit="username()" action="javascript:void(0)">
+      <input type="text" placeholder="Search.." id='search' onkeydown = "if (event.keyCode == 13){
+                        document.getElementById('fa fa-search').click()}" >
+      <button type='button' id='btn' class='fa fa-search' onclick="username()"></button>
     </form>
   </div>
 </div>
@@ -130,7 +131,8 @@ body, html {height: 100%}
 
   function username(){
     var input = document.getElementById('search').value;
-    console.log(input);
+  
+    sessionStorage.myValue = input;
 
     window.location.href = "SearchTest.html";
   }
