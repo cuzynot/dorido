@@ -3,14 +3,13 @@ import time
 from selenium import webdriver
 from pymongo import MongoClient
         
-def scrape(browser, collection, itemName, url):
+def scrape(browser, collection, itemName, url, f, globalList):
     browser.get(url)
     time.sleep(1)
     print("len", len(browser.page_source))
     print(browser.page_source[0])
     curStore = url[url.index(".") + 1:]
     curStore = curStore[:curStore.index(".")]
-    print(curStore)
 
     # initialize lists
     allNames = []
@@ -45,7 +44,7 @@ def scrape(browser, collection, itemName, url):
 ##            print(name)
 
     
-    if (curStore == "nofrills" or curStore == "loblaws" or curStore == "fortinos"):
+    if (curStore == "nofrills" or curStore == "loblaws" or curStore == "fortinos" or curStore == "valumart"):
         names = soup.findAll("span", {"class":"product-name__item--name"})
         prices = soup.findAll("span", {"class":"price__value selling-price-list__item__price selling-price-list__item__price--now-price__value"})
 
@@ -105,6 +104,66 @@ def scrape(browser, collection, itemName, url):
         for item in prices:
             allPrices.append(item.text.replace(" ", "").replace("\n", ""))
 
+    elif (curStore == "dollarama"):
+        names = soup.findAll("div", {"class":"product-tile-title-ellipsis"})
+        prices = soup.findAll("span", {"data-qa":"search-unit-price"})
+
+        for item in names:
+            allNames.append(item.a.title)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "costco"):
+        names = soup.findAll("div", {"class":"description"})
+        prices = soup.findAll("div", {"class":"price"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "bestbuy"):
+        names = soup.findAll("div", {"itemprop":"name"})
+        prices = soup.findAll("meta", {"itemprop":"price"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.content)
+            
+    elif (curStore == "ikea"):
+        names = soup.findAll("span", {"class":"product-compact__name"})
+        prices = soup.findAll("span", {"class":"product-compact__price__value"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "staples"):
+        names = soup.findAll("a", {"class":"product-thumbnail__title d-block product-link"})
+        prices = soup.findAll("div", {"class":"product-thumbnail__price "})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.span.text)
+
+    elif (curStore == "partycity"):
+        names = soup.findAll("a", {"class":"thumb_link"})
+        prices = soup.findAll("span", {"class":"strong"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
     
     #############################
     for i in range(len(allNames)):
@@ -112,22 +171,33 @@ def scrape(browser, collection, itemName, url):
     
     # print lists
     print(len(allNames))
-    print(allNames)
-    print(allPrices)
-    print(allStores)
 
-    # add all members to mongo db
-    for i in range(min(len(allNames), len(allPrices))):
-        newItem = {
-            "item": itemName,
-            "description": allNames[i],
-            "price": allPrices[i],
-            "store": curStore
-        }
+    if (len(allNames) > 0):
+        print(allNames)
+        print(allPrices)
+        print(allStores)
 
-        collection.insert_one(newItem)
+        # add all members to mongo db
+        if collection.find_one({"item":itemName, "store":curStore}) == None:
+            print("TRUEW")
+            for i in range(min(len(allNames), len(allPrices))):
+                newItem = {
+                    "item": itemName,
+                    "description": allNames[i],
+                    "price": allPrices[i],
+                    "store": curStore
+                }
 
+                collection.insert_one(newItem)
 
+        for i in range(min(len(allNames), len(allPrices))):
+            f.write(allNames[i]+"\n")
+            f.write(allPrices[i]+"\n")
+            f.write(curStore+"\n")
+            globalList.append(allNames[i])
+            globalList.append(allPrices[i])
+            globalList.append(curStore)
+        
 
 def scrapeAll(urls):
     # selenium
@@ -142,14 +212,14 @@ def scrapeAll(urls):
 
     # scrape all items
     itemName = urls[0]
+    globalList = []
+    f = open("record.txt", "w", encoding="utf-8")
     for i in range(1, len(urls)):
-        scrape(browser, collection, itemName, urls[i])
+        scrape(browser, collection, itemName, urls[i], f, globalList)
 
     print(collection.count_documents({}))
+    return globalList
 
 
 #scrape(url)
-
-scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])
-
-
+#scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])

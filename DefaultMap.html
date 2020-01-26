@@ -27,6 +27,14 @@ function initMap() {
     zoom: 11
   });
 
+  function toggleBounce() {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }
+
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -41,6 +49,7 @@ function initMap() {
         title: "This Place",
         animation: google.maps.Animation.DROP
       });
+      marker.addListener('click', toggleBounce);
     });
   }
 }
