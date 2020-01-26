@@ -88,6 +88,25 @@
         background: #ccc;
       }
 
+      .list{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        height: 85%;
+        width: 30%;
+        color: black;
+        font-size: 18px
+        font-weight: bold;
+        overflow-y: auto;;
+      }
+
+      li{
+        cursor: pointer;
+        padding: 12px 8px 12px 8px;
+        background: white;
+        transition: 0.2s;
+      }
+
       @media screen and (max-width: 600px) {
         .topnav .search-container {
           float: none;
@@ -116,8 +135,9 @@
       </div>
     <div class="input-group md-form form-sm form-1 pl-0"></div>
       <div class="input-group-prepend"></div>
-    <ul id='list'></ul>
-
+    <div class="list">
+    <ul id='dylist' style="list-style: none;"></ul>
+    </div>
     <div class="topnav">
       <div class="search-container" class="img-responsive">
     <form onsubmit="searchAgain()" action="javascript:void(0)">
@@ -135,6 +155,7 @@ var service;
 var request;
 var data;
 var markers = [];
+var places = [];
 
 $(document).ready(function () {
 postData(sessionStorage.myValue);
@@ -189,13 +210,36 @@ function callback(results, status) {
       animation: google.maps.Animation.DROP
   });
       markers.push(place);
+      places.push(results[i]);
     }
+    addToList(places);
   }
+}
+
+function addToList(places){
+    var ul = document.getElementById("dylist");
+    for (var i = 0; i < places.length; i++) {
+      var candidate = places[i].name;
+      var li = document.createElement("li");
+      li.setAttribute('id',candidate);
+      li.appendChild(document.createTextNode(candidate));
+      li.appendChild(document.createTextNode("Price: $"));
+      ul.appendChild(li);
+    }
 }
 
 function searchAgain(){
   setMapOnAll(null);
   markers=[];
+  
+  var ul = document.getElementById("dylist");
+  for(var i = 0; i < places.length; i++){
+    var candidate = places[i].name;
+    var item = document.getElementById(candidate);
+    ul.removeChild(item);
+  }
+
+  places = [];
   search(document.getElementById('search').value, map.center);
 }
 
@@ -217,6 +261,16 @@ function postData(input) {
 function callbackFunc(response) {
     data = response;
 }
+
+      // Retrieve
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+  if(!err) {
+    console.log("We are connected");
+  }
+});
     </script>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB0cKOpcb9uFhKGNQOlzzr8SKwtSHt4_8&callback=initMap&libraries=places"></script>
