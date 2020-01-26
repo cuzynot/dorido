@@ -151,5 +151,3 @@ def scrapeAll(urls):
 #scrape(url)
 
 scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])
-
-
