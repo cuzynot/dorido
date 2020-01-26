@@ -19,6 +19,31 @@ def scrape(browser, collection, itemName, url):
     
     # parse html
     soup = BeautifulSoup(browser.page_source, 'html.parser')
+
+    html = browser.page_source
+
+##    while 1:
+##        if itemName not in html:
+##            break
+##
+##        html = html[html.index(itemName):]
+##
+##        if "<" not in html and '"' not in html:
+##            break
+##
+##        ind = int(2**30)
+##        if "<" in html:
+##            ind = html.index("<")
+##        if '"' in html and html.index('"') < ind:
+##            ind = html.index('"')
+##                  
+##        name = html[0:ind]
+##        html = html[ind:]
+
+##        print(name)
+##        if len(name) >= len(itemName) and len(name) < 40:
+##            print(name)
+
     
     if (curStore == "nofrills" or curStore == "loblaws" or curStore == "fortinos"):
         names = soup.findAll("span", {"class":"product-name__item--name"})
