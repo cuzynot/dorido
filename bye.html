@@ -112,12 +112,30 @@ body, html {height: 100%}
 </div>
 
 <script type="text/javascript">
+  // if(process.env.NODE_ENV ==='production'){
+  //   module.exports = require('./keys_prod');
+  // } else {
+  //   module.exports = require('/keys_dev');
+  // }
+  
+  // module.exports={
+  //   mongoURI: process.env.MONGO_URI,
+  //   secretOrKey: process.env.SECRET_OR_KEY
+  // };
+
+  // module.exports = {
+  //   mongoURI: 'mongodb+srv://Joyce:Joyce@cluster0-6vevp.mongodb.net/test?retryWrites=true&w=majority',
+  //   secretOrKey: 'SECRET'
+  // };
+
   function username(){
     var input = document.getElementById('search').value;
     console.log(input);
+
     window.location.href = "SearchTest.html";
   }
 </script>
+<script type="text/javascript"></script>
 
 </body>
 </html>
