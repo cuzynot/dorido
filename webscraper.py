@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import time
 from selenium import webdriver
     
-url = "https://www.mastermindtoys.com/search/beyblade.aspx"
+url = "https://www.canadiantire.ca/en/search-results.html?q=screwdriver"
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
@@ -13,15 +13,12 @@ def scrape(url):
     browser.get(url)
     time.sleep(1)
     print("len", len(browser.page_source))
+    print(browser.page_source[0])
     curStore = url[url.index(".") + 1:]
     curStore = curStore[:curStore.index(".")]
     print(curStore)
 
     # initialize lists
-##    names = []
-##    prices = []
-##    stores = []
-    
     allNames = []
     allPrices = []
     allStores = []
@@ -39,11 +36,6 @@ def scrape(url):
 
         for item in prices:
             allPrices.append(item.text)
-            
-##    elif (curStore == "walmart"):
-##        names = soup.findAll("h2")
-##        prices = soup.findAll("div", {"possibleRangedCurrencyText: { data: price, simpleFormatting: simpleFormatting } "})
-
 
     elif (curStore == "metro"):        
         names = soup.findAll("div", {"class":"pt-title"})
@@ -85,9 +77,18 @@ def scrape(url):
         for item in prices:
             allPrices.append(item.text)
 
-        
+    elif (curStore == "canadiantire"):
+        names = soup.findAll("h3", {"class":"product-tile-srp__title grid--grid-view__item specialCss"})
+        prices = soup.findAll("section", {"class":"product-tile__price"})
 
+        for item in names:
+            allNames.append(item.text)
 
+        for item in prices:
+            allPrices.append(item.text.replace(" ", "").replace("\n", ""))
+
+    
+    #############################
     for i in range(len(allNames)):
         allStores.append(curStore)
 
