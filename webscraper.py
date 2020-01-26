@@ -112,20 +112,26 @@ def scrape(browser, collection, itemName, url):
     
     # print lists
     print(len(allNames))
-    print(allNames)
-    print(allPrices)
-    print(allStores)
 
-    # add all members to mongo db
-    for i in range(min(len(allNames), len(allPrices))):
-        newItem = {
-            "item": itemName,
-            "description": allNames[i],
-            "price": allPrices[i],
-            "store": curStore
-        }
+    if (len(allNames) > 0):
+        print(allNames)
+        print(allPrices)
+        print(allStores)
 
-        collection.insert_one(newItem)
+        # add all members to mongo db
+        if collection.find_one({"item":itemName}) == None:
+            print("TRUEW")
+            for i in range(min(len(allNames), len(allPrices))):
+                newItem = {
+                    "item": itemName,
+                    "description": allNames[i],
+                    "price": allPrices[i],
+                    "store": curStore
+                }
+
+                same = False
+
+                #collection.insert_one(newItem)
 
 
 
@@ -149,5 +155,4 @@ def scrapeAll(urls):
 
 
 #scrape(url)
-
-scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])
+#scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])
