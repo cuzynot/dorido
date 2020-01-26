@@ -3,14 +3,13 @@ import time
 from selenium import webdriver
 from pymongo import MongoClient
         
-def scrape(browser, collection, itemName, url):
+def scrape(browser, collection, itemName, url, f, globalList):
     browser.get(url)
     time.sleep(1)
     print("len", len(browser.page_source))
     print(browser.page_source[0])
     curStore = url[url.index(".") + 1:]
     curStore = curStore[:curStore.index(".")]
-    print(curStore)
 
     # initialize lists
     allNames = []
@@ -189,11 +188,16 @@ def scrape(browser, collection, itemName, url):
                     "store": curStore
                 }
 
-                same = False
-
                 collection.insert_one(newItem)
 
-
+        for i in range(min(len(allNames), len(allPrices))):
+            f.write(allNames[i]+"\n")
+            f.write(allPrices[i]+"\n")
+            f.write(curStore+"\n")
+            globalList.append(allNames[i])
+            globalList.append(allPrices[i])
+            globalList.append(curStore)
+        
 
 def scrapeAll(urls):
     # selenium
@@ -208,10 +212,13 @@ def scrapeAll(urls):
 
     # scrape all items
     itemName = urls[0]
+    globalList = []
+    f = open("record.txt", "w", encoding="utf-8")
     for i in range(1, len(urls)):
-        scrape(browser, collection, itemName, urls[i])
+        scrape(browser, collection, itemName, urls[i], f, globalList)
 
     print(collection.count_documents({}))
+    return globalList
 
 
 #scrape(url)

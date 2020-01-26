@@ -25,7 +25,7 @@ def crawl(item):
     links.append("https://www.valumart.ca/search?search-bar="+item)
     #links.append("https://www.londondrugs.com/search/?q="+item+"&lang=default")
 
-    scrapeAll(links)
+    return(scrapeAll(links))
 
-crawl("laptop")
+crawl("doritos")
     
