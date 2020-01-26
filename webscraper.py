@@ -1,15 +1,9 @@
-from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup
 import time
 from selenium import webdriver
-    
-url = "https://www.canadiantire.ca/en/search-results.html?q=screwdriver"
-
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-browser = webdriver.Chrome("C:/Users/yilis/Downloads/chromedriver_win32/chromedriver.exe", chrome_options=options)
-
-def scrape(url):
+from pymongo import MongoClient
+        
+def scrape(browser, collection, itemName, url):
     browser.get(url)
     time.sleep(1)
     print("len", len(browser.page_source))
@@ -22,8 +16,7 @@ def scrape(url):
     allNames = []
     allPrices = []
     allStores = []
-    allRatings = []
-
+    
     # parse html
     soup = BeautifulSoup(browser.page_source, 'html.parser')
     
@@ -91,17 +84,47 @@ def scrape(url):
     #############################
     for i in range(len(allNames)):
         allStores.append(curStore)
-
+    
     # print lists
     print(len(allNames))
     print(allNames)
     print(allPrices)
     print(allStores)
 
+    # add all members to mongo db
+    for i in range(min(len(allNames), len(allPrices))):
+        newItem = {
+            "item": itemName,
+            "description": allNames[i],
+            "price": allPrices[i],
+            "store": curStore
+        }
 
-def scrapeAll(url):
-    for u in url:
-        scrape(url)
+        collection.insert_one(newItem)
 
 
-scrape(url)
+
+def scrapeAll(urls):
+    # selenium
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    browser = webdriver.Chrome("C:/Users/yilis/Downloads/chromedriver_win32/chromedriver.exe", chrome_options=options)
+
+    # mongodb
+    client = MongoClient("mongodb://yililiu:yililiu@dhcluster-shard-00-00-zicz8.gcp.mongodb.net:27017,dhcluster-shard-00-01-zicz8.gcp.mongodb.net:27017,dhcluster-shard-00-02-zicz8.gcp.mongodb.net:27017/test?ssl=true&replicaSet=DHCluster-shard-0&authSource=admin&retryWrites=true&w=majority")
+    db = client.get_database("deltahacks")
+    collection = db.dorido
+
+    # scrape all items
+    itemName = urls[0]
+    for i in range(1, len(urls)):
+        scrape(browser, collection, itemName, urls[i])
+
+    print(collection.count_documents({}))
+
+
+#scrape(url)
+
+scrapeAll(["dorito", "https://www.nofrills.ca/search?search-bar=dorito"])
+
+
