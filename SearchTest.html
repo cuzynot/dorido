@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Search Test</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style type="text/css">
+      #map {
+        height: 100%;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB0cKOpcb9uFhKGNQOlzzr8SKwtSHt4_8&libraries=places"></script> -->
+
+    <script type="text/javascript">
+//       var map;
+//       var service;
+//       var request;
+//       function initMap() {
+//         map = new google.maps.Map(document.getElementById('map'), {
+//           center: {lat: -34.397, lng: 150.644},
+//           zoom: 11
+//         });
+
+//         if (navigator.geolocation) {
+//           navigator.geolocation.getCurrentPosition(function(position) {
+//             var pos = {
+//               lat: position.coords.latitude,
+//               lng: position.coords.longitude
+//             };
+//             map.setCenter(pos);
+//             var marker = new google.maps.Marker({
+//               position: pos,
+//               map: map,
+//               title: "This Place",
+//               animation: google.maps.Animation.DROP
+//             });
+//             request = {
+//               location: pos,
+//               radius: '2000',
+//               query: 'walmart'
+//             };
+//           });
+//         }
+//         service = new google.maps.places.PlacesService(map);
+//         service.textSearch(request, callback);
+//       }
+
+// function createMarker(place) {
+
+//     new google.maps.Marker({
+//         position: place.geometry.location,
+//         map: map
+//     });
+// }
+
+// function callback(results, status) {
+//   console.log(status);
+//   if (status == google.maps.places.PlacesServiceStatus.OK) {
+//     for (var i = 0; i < results.length; i++) {
+//       var place = results[i];
+//       createMarker(results[i]);
+//     }
+//   }
+// }
+
+var map;
+var service;
+var request;
+
+function initMap() {
+  var nothardcoded = new google.maps.LatLng(43.2609,-89.9192);
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      center: nothardcoded,
+      zoom: 12
+    });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            map.setCenter(pos);
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map,
+              title: "This Place",
+              animation: google.maps.Animation.DROP
+            });
+            
+          });
+  }
+  search('walmart', map.center);
+}
+
+function search(loca, currentLoca){
+  request = {
+    location: currentLoca,
+    radius: '5000',
+    query: loca
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.textSearch(request, callback);
+}
+
+function createMarker(place) {
+
+  new google.maps.Marker({
+      position: place.geometry.location,
+      map: map
+  });
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      var place = results[i];
+      createMarker(results[i]);
+    }
+  }
+}
+    </script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB0cKOpcb9uFhKGNQOlzzr8SKwtSHt4_8&callback=initMap&libraries=places"></script>
+  </body>
+</html>

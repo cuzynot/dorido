@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('https://wallpaperplay.com/walls/full/d/1/c/26997.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+.form-controlmy-0py-1 {
+  position: fixed;
+  width: 30%;
+  left: 35%;
+  right: 35%;
+  top: 60%;
+
+}
+
+.navbar-brand {
+  position: fixed;
+  width: 20%;
+  left: 3%;
+  right: 87%;
+  top: 5%;
+}
+.topnav .search-container {
+  position: fixed;
+  width: 37%;
+  left: 42%;
+  right: 60%;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 280px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  /*position: fixed;*/
+  padding: 6px 10px;
+  top: 70%;
+  width: 10%;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav .search-container {
+    float: none;
+  }
+  .topnav a, .topnav input[type=text], .topnav .search-container button {
+    float: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding: 14px;
+  }
+  .topnav input[type=text] {
+    border: 1px solid #ccc;  
+  }
+
+/*.logo{
+  float:left;
+  height: 10px;
+  max-width:10px;
+  background-size: cover;
+}*/
+</style>
+<body>
+
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+  <div class="w3-display-middle">
+    <h1 class="w3-jumbo w3-animate-top">Doridos</h1>
+    <hr class="w3-border-grey" style="margin:auto;width:40%">
+    <p class="w3-large w3-center">Shopping Conveniently</p>
+  </div>
+<div class="input-group md-form form-sm form-1 pl-0">
+  <div class="input-group-prepend">
+<!--   </div>
+  <input class="form-controlmy-0py-1" type="text" placeholder="Search" aria-label="Search">
+</div> -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <div class="image">
+      <a class="logo" href="#"><img src="Picture1.png"></a>
+      </div>
+    </nav>
+
+<div class="topnav">
+  <div class="search-container" class="img-responsive">
+    <form>
+      <input type="text" placeholder="Search.." id='search'>
+      <button type='button' class='fa fa-search' onclick="username()"></button>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function username(){
+    var input = document.getElementById('search').value;
+    console.log(input);
+    window.location.href = "SearchTest.html";
+  }
+</script>
+
+</body>
+</html>
