@@ -45,7 +45,7 @@ def scrape(browser, collection, itemName, url):
 ##            print(name)
 
     
-    if (curStore == "nofrills" or curStore == "loblaws" or curStore == "fortinos"):
+    if (curStore == "nofrills" or curStore == "loblaws" or curStore == "fortinos" or curStore == "valumart"):
         names = soup.findAll("span", {"class":"product-name__item--name"})
         prices = soup.findAll("span", {"class":"price__value selling-price-list__item__price selling-price-list__item__price--now-price__value"})
 
@@ -105,6 +105,66 @@ def scrape(browser, collection, itemName, url):
         for item in prices:
             allPrices.append(item.text.replace(" ", "").replace("\n", ""))
 
+    elif (curStore == "dollarama"):
+        names = soup.findAll("div", {"class":"product-tile-title-ellipsis"})
+        prices = soup.findAll("span", {"data-qa":"search-unit-price"})
+
+        for item in names:
+            allNames.append(item.a.title)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "costco"):
+        names = soup.findAll("div", {"class":"description"})
+        prices = soup.findAll("div", {"class":"price"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "bestbuy"):
+        names = soup.findAll("div", {"itemprop":"name"})
+        prices = soup.findAll("meta", {"itemprop":"price"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.content)
+            
+    elif (curStore == "ikea"):
+        names = soup.findAll("span", {"class":"product-compact__name"})
+        prices = soup.findAll("span", {"class":"product-compact__price__value"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
+    elif (curStore == "staples"):
+        names = soup.findAll("a", {"class":"product-thumbnail__title d-block product-link"})
+        prices = soup.findAll("div", {"class":"product-thumbnail__price "})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.span.text)
+
+    elif (curStore == "partycity"):
+        names = soup.findAll("a", {"class":"thumb_link"})
+        prices = soup.findAll("span", {"class":"strong"})
+
+        for item in names:
+            allNames.append(item.text)
+
+        for item in prices:
+            allPrices.append(item.text)
+
     
     #############################
     for i in range(len(allNames)):
@@ -119,10 +179,7 @@ def scrape(browser, collection, itemName, url):
         print(allStores)
 
         # add all members to mongo db
-        if collection.find_one({"item":"doritos",
-                                   "description": allNames[i],
-                                   "price": allPrices[i],
-                                   "store":curStore}) == None:
+        if collection.find_one({"item":itemName, "store":curStore}) == None:
             print("TRUEW")
             for i in range(min(len(allNames), len(allPrices))):
                 newItem = {
