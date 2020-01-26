@@ -32,7 +32,10 @@ body, html {height: 100%}
   top: 5%;
 }
 .topnav .search-container {
-  float: right;
+  position: fixed;
+  width: 37%;
+  left: 42%;
+  right: 60%;
 }
 
 .topnav input[type=text] {
@@ -43,10 +46,10 @@ body, html {height: 100%}
 }
 
 .topnav .search-container button {
-  float: right;
+  /*position: fixed;*/
   padding: 6px 10px;
-  margin-top: 280px;
-  margin-right: 630px;
+  top: 70%;
+  width: 10%;
   background: #ddd;
   font-size: 17px;
   border: none;
@@ -83,8 +86,6 @@ body, html {height: 100%}
 <body>
 
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-  <div class="w3-display-topleft w3-padding-large w3-xlarge">
-  </div>
   <div class="w3-display-middle">
     <h1 class="w3-jumbo w3-animate-top">Doridos</h1>
     <hr class="w3-border-grey" style="margin:auto;width:40%">
@@ -92,8 +93,6 @@ body, html {height: 100%}
   </div>
 <div class="input-group md-form form-sm form-1 pl-0">
   <div class="input-group-prepend">
-    <span class="input-group-text purple lighten-3" id="basic-text1"><i class="fas fa-search text-white"
-        aria-hidden="true"></i></span>
 <!--   </div>
   <input class="form-controlmy-0py-1" type="text" placeholder="Search" aria-label="Search">
 </div> -->
@@ -105,12 +104,20 @@ body, html {height: 100%}
 
 <div class="topnav">
   <div class="search-container" class="img-responsive">
-    <form action="/action_page.php">
-      <input type="text" placeholder="Search.." name="search">
-      <button type="submit"><i class="fa fa-search"></i></button>
+    <form>
+      <input type="text" placeholder="Search.." id='search'>
+      <button type='button' class='fa fa-search' onclick="username()"></button>
     </form>
   </div>
 </div>
+
+<script type="text/javascript">
+  function username(){
+    var input = document.getElementById('search').value;
+    console.log(input);
+    window.location.href = "SearchTest.html";
+  }
+</script>
 
 </body>
 </html>
