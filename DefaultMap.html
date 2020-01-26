@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Default Map</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <style type="text/css">
+    	#map {
+    		height: 100%;
+    	}
+
+    	html, body {
+    		height: 100%;
+    		margin: 0;
+    		padding: 0;
+    	}
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script type="text/javascript">
+    	var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 11
+  });
+
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      map.setCenter(pos);
+      var marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: "This Place",
+        animation: google.maps.Animation.DROP
+      });
+    });
+  }
+}
+    </script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB0cKOpcb9uFhKGNQOlzzr8SKwtSHt4_8&callback=initMap"></script>
+  </body>
+</html>
