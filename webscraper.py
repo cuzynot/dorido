@@ -119,7 +119,10 @@ def scrape(browser, collection, itemName, url):
         print(allStores)
 
         # add all members to mongo db
-        if collection.find_one({"item":itemName}) == None:
+        if collection.find_one({"item":"doritos",
+                                   "description": allNames[i],
+                                   "price": allPrices[i],
+                                   "store":curStore}) == None:
             print("TRUEW")
             for i in range(min(len(allNames), len(allPrices))):
                 newItem = {
@@ -131,7 +134,7 @@ def scrape(browser, collection, itemName, url):
 
                 same = False
 
-                #collection.insert_one(newItem)
+                collection.insert_one(newItem)
 
 
 
