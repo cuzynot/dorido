@@ -84,6 +84,13 @@
         cursor: pointer;
       }
 
+#search{
+  border-radius: 10px;
+}
+
+#btn{
+ border-radius: 5px; 
+}
       .topnav .search-container button:hover {
         background: #ccc;
       }
@@ -97,7 +104,7 @@
         color: black;
         font-size: 18px
         font-weight: bold;
-        overflow-y: auto;;
+        overflow: auto;;
       }
 
       li{
@@ -129,7 +136,7 @@
     <div id="map"></div>
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
       <div class="w3-display-middle">
-        <h3 class="w3-jumbo-w3-animate-top">Doridos</h3>
+        <h3 class="w3-jumbo-w3-animate-top"><a href="bye.html" style="text-decoration: none">Doridos</a></h3>
         <hr class="w3-border-grey" style="margin:0;width:40%">
         <p class="w3-large-w3-center">Shopping Conveniently</p>
       </div>
@@ -153,13 +160,21 @@
 var map;
 var service;
 var request;
-var data;
+var data = [];
+var stores = [];
+var items = [];
 var markers = [];
 var places = [];
+var doritos = "Tortilla Chips, Nacho Cheese\n$3.87\nnofrills\nTortilla Chips, Cool Ranch\n$2.87\nnofrills\nTortilla Chips, Nacho Cheese\n$2.87\nnofrills\nTortilla Chips, Zesty Cheese\n$2.87\nnofrills\nTortilla Chips, Sweet Chili Heat!\n$2.87\nnofrills\nTortilla Chips, Bold BBQ\n$2.87\nnofrills\nTortilla Chips, Spicy Nacho\n$2.87\nnofrills\nTortilla Chips, Nacho Cheese\n$1.47\nnofrills\nSimply Tortilla Chips, White Cheddar\n$4.97\nnofrills\nSonic Sour Cream Tortilla Chips\n$2.87\nnofrills\nDinamita Nacho Picoso Tortilla Chips\n$2.87\nnofrills\nCorn Snacks, Original\n$3.67\nnofrills\nClassic Mix, Value Pack\n$6.87\nnofrills\nLay's Mix, Value Pack\n$6.87\nnofrills\nFlavour Mix, Value Pack\n$6.87\nnofrills\nHostess Hickory Sticks Snacks, Original\n$1.47\nnofrills\nTortilla Chips, Nacho Cheese\n$4.99\nloblaws\nTortilla Chips, Sweet Chilli Heat\n$4.99\nloblaws\nFlamin' Hot Nacho Tortilla Chip\n$3.99\nloblaws\nTortilla Chips, Jalapeño & Cheddar\n$3.99\nloblaws\nTortilla Chips, Nacho Cheese\n$3.99\nloblaws\nTortilla Chips, Cool Ranch\n$3.99\nloblaws\nTortilla Chips, Zesty Cheese\n$3.99\nloblaws\nTortilla Chips, Sweet Chili Heat!\n$3.99\nloblaws\nDorito Mix, Value Pack\n$4.99\nloblaws\nTortilla Chips, Nacho Cheese\n$1.69\nloblaws\nTortilla Chips, Bold BBQ\n$3.99\nloblaws\nTortilla Chips, Spicy Nacho\n$3.99\nloblaws\nDinamita Nacho Picoso Tortilla Chips\n$3.99\nloblaws\nSonic Sour Cream Tortilla Chips\n$3.99\nloblaws\nDinamita Chile Lim?n Tortilla Chips\n$3.99\nloblaws\nSnacks, Snack Mix Original\n$4.99\nloblaws\nCanadian Havarti\n$12.70\nloblaws\nMiss Vickie's Favourites\n$4.99\nloblaws\nCorn Snacks, Original\n$3.99\nloblaws\nHavarti, Jalape à ±o (by weight)\n$1.60\nloblaws\nSpicy Mix, Value Pack\n$7.99\nloblaws\nSmartfood Favourites Snack Mix\n$4.99\nloblaws\nLay's Mix, Value Pack\n$7.99\nloblaws\nFlavour Mix, Value Pack\n$7.99\nloblaws\nClassic Mix, Value Pack\n$7.99\nloblaws\nSmart Mix, Value Pack\n$7.99\nloblaws\nKnotted Rope Bone, 37 cm\n$6.49\nloblaws\nCorn Snacks, Bar-B-Q\n$3.99\nloblaws\nBaked Blush, Rose Doro\n$7.99\nloblaws\nCotton Tug Rope w/2 Tennis Balls\n$7.99\nloblaws\nStages Kid's Toothpaste featuring Disney Pixar's Finding Dory\n$2.99\nloblaws\nMilk Chocolate Bar\n$4.99\nloblaws\nTortilla Chips, Nacho Cheese\n$5.29\nfortinos\nTortilla Chips, Sweet Chilli Heat\n$5.29\nfortinos\nFlamin' Hot Nacho Tortilla Chip\n$3.69\nfortinos\nTortilla Chips, Cool Ranch\n$3.69\nfortinos\nTortilla Chips, Nacho Cheese\n$3.69\nfortinos\nTortilla Chips, Zesty Cheese\n$3.69\nfortinos\nTortilla Chips, Jalapeño & Cheddar\n$3.69\nfortinos\nTortilla Chips, Sweet Chili Heat!\n$3.69\nfortinos\nDorito Mix, Value Pack\n$5.99\nfortinos\nTortilla Chips, Nacho Cheese\n$1.69\nfortinos\nTortilla Chips, Bold BBQ\n$3.69\nfortinos\nTortilla Chips, Spicy Nacho\n$3.69\nfortinos\nSnacks, Snack Mix Original\n$5.29\nfortinos\nCanadian Havarti\n$7.89\nfortinos\nSmoked Gouda\n$6.99\nfortinos\nGouda Cheese\n$6.99\nfortinos\nMiss Vickie's Favourites\n$5.99\nfortinos\nCorn Snacks, Original\n$4.19\nfortinos\nClean Greens & Berries Dietary Supplement Mojito\n$47.99\nfortinos\nHavarti, Jalape à ±o (by weight)\n$0.99\nfortinos\nFlavour Mix, Value Pack\n$7.99\nfortinos\nSmart Mix, Value Pack\n$7.99\nfortinos\nSmartfood Favourites Snack Mix\n$5.99\nfortinos\nClassic Mix, Value Pack\n$7.99\nfortinos\nLay's Mix, Value Pack\n$7.99\nfortinos\nSpicy Mix, Value Pack\n$7.99\nfortinos\nCorn Snacks, Bar-B-Q\n$4.19\nfortinos\nStages Kid's Toothpaste featuring Disney Pixar's Finding Dory\n$3.29\nfortinos\nNacho cheese tortilla chips\n3.99\nmetro\nSweet chili heat tortilla chips\n3.99\nmetro\nCool ranch tortilla chips\n3.99\nmetro\nParty size nacho cheese tortilla chips\n3.50\nmetro\nStratos Sled - Mystic Black & Green\n19.99\nmastermindtoys\nMOPSIG\n$5.99\nikea\nKIVIK\n$629.00\nikea\nALEX\n$99.00\nikea\nFJÄDRAR\n$8.00\nikea\nLÄTT\n$29.99\nikea\nKALLAX\n$85.00\nikea\nNORDLI\n$659.00\nikea\nMICKE\n$69.99\nikea\nBILLY\n$55.00\nikea\nDRÖNA\n$5.99\nikea\nTortilla Chips, Nacho Cheese\n$4.99\nvalumart\nFlamin' Hot Nacho Tortilla Chip\n$3.99\nvalumart\nTortilla Chips, Zesty Cheese\n$3.99\nvalumart\nTortilla Chips, Cool Ranch\n$3.99\nvalumart\nTortilla Chips, Jalapeño & Cheddar\n$3.99\nvalumart\nTortilla Chips, Nacho Cheese\n$3.99\nvalumart\nTortilla Chips, Sweet Chili Heat!\n$3.99\nvalumart\nDorito Mix, Value Pack\n$4.99\nvalumart\nTortilla Chips, Nacho Cheese\n$1.69\nvalumart\nTortilla Chips, Spicy Nacho\n$3.99\nvalumart\nSimply Tortilla Chips, White Cheddar\n$4.99\nvalumart\nDinamita Nacho Picoso Tortilla Chips\n$3.99\nvalumart\nSonic Sour Cream Tortilla chips \n$1.69\nvalumart\nSonic Sour Cream Tortilla Chips\n$3.99\nvalumart\nDinamita Chile Lim?n Tortilla Chips\n$3.99\nvalumart\nSnacks, Snack Mix Original\n$4.99\nvalumart\nMiss Vickie's Favourites\n$4.99\nvalumart\nCorn Snacks, Original\n$3.99\nvalumart\nFlavour Mix, Value Pack\n$7.99\nvalumart\nLay's Mix, Value Pack\n$7.99\nvalumart\nClassic Mix, Value Pack\n$7.99\nvalumart\nCorn Snacks, Bar-B-Q\n$3.99\nvalumart";
 
-$(document).ready(function () {
-postData(sessionStorage.myValue);
-});
+var onePlus = "OnePlus 7 (256GB) Smartphone - Dual Sim - Unlocked - Mirror Grey - International Version w/Seller Provided Warranty\n$599.99\nbestbuy\nOnePlus 7 Pro - 8GB RAM - 256GB Storage - 6.67inch Fluid AMOLED Screen, Dual-SIM, Factory Unlocked - Mirror Grey\n$939.99\nbestbuy\nOnePlus 7T Pro 12GB+256GB 6.67 Inch Dual Sim Factory Unlocked McLaren Edition (HD1913)\n$1,299.99\nbestbuy\nOnePlus 7T 256GB Smartphone - Dual Sim - Unlocked - Blue\n$849.99\nbestbuy\nONEPLUS 7T PRO 8GB 256GB 6.67 INCH DUAL SIM FACTORY UNLOCKED - HAZE BLUE\n$919.99\nbestbuy\nOnePlus 7 PRO Smartphone - 12GB RAM - 256GB Storage - Dual-SIM - Factory Unlocked - International Version (Nebula Blue)\n$1,069.99\nbestbuy\nOnePlus 7 Pro 8GB 256GB 6.67inch Dual-SIM Smartphone w/Qualcomm Snapdragon 855 - Factory Unlocked - Nebula Blue\n$939.99\nbestbuy\nOnePlus 7 Pro Tempered Glass Screen Protector\n$9.99\nbestbuy\nOnePlus 6T Dual-SIM (256GB ROM | 8GB RAM) 4G/LTE Smartphone - International Version (Midnight Black)\n$729.99\nbestbuy\nRingke Fusion X Design DDP Compatible with OnePlus 7 Pro Case Protection Cover (6.7) 2019 Camo Black\n$21.99\nbestbuy\nRingke Fusion-X Designed for OnePlus 7 Case Impact Resistant Protection Cover for OnePlus 7 (6.4) - Black\n$20.99\nbestbuy\nOnePlus 7 8GB 256GB 6.41 inch dual sim factory unlocked - Red\n$749.99\nbestbuy\nOnePlus 5T Case, Spigen Rugged Armor - Resilient Shock Absorption and Carbon Fiber Design for OnePlus 5T (2017) - Black\n$24.99\nbestbuy\nOnePlus 7 Pro Case Slim-Fit TUDIA [Merge] Dual Layer Precise Cutouts Phone Case for OnePlus 7 Pro (2019) (Metallic Slate)\n$20.99\nbestbuy\nOnePlus 5 Case, Orzly FlexiCase for OnePlus 5 - MATT PINK [Slim-Fit] Protective [Anti-Scratch] Flexible Skin Case Cover for Ne\n$18.39\nbestbuy\nOrzly® - Multi-Function Wallet Case for OnePlus X SmartPhone (Dual SIM 2015 Model - OxygenOS UI Version) - RED Wallet Case Sty\n$20.19\nbestbuy\nExian OnePlus 1 Screen Protectors X 2 Anti-Glare\n$9.98\nbestbuy\nExian OnePlus 1 Screen Protectors X 2 Clear\n$9.98\nbestbuy\nOnePlus 5 Charge Charging Port Flex Cable Replacement\n$22.99\nbestbuy\nOnePlus 5 SIM Card Tray Replacement - Gold\n$12.99\nbestbuy\nOnePlus 5 SIM Card Tray Replacement - Black\n$11.99\nbestbuy\nOneplus Two 2 Back Battery Door Replacement Cover - Black\n$16.99\nbestbuy\nOneplus Two 2 Home Button Flex Cable Replacement\n$8.99\nbestbuy\nOneplus One 1+ Micro USB Charging Charge Port Flex Cable Replacement\n$10.99\nbestbuy\nLÄTT\n$29.99\nikea\nSLÄKT\n$279.00\nikea\nHOVET\n$129.00\nikea\nHOLMÖ\n$12.99\nikea\nNEIDEN\n$59.99\nikea\nHAUGSVÄR\n$399.00\nikea\nBILLY\n$55.00\nikea\nMALM\n$169.00\nikea\nKIVIK\n$979.00\nikea\nJOKKMOKK\n$149.00\nikea\nTapplock One Plus Smart Fingerprint Scanning Waterproof Bluetooth Rechargeable Biometric Padlock, Gun Metal\n$129.99\nstaples\nExian One Plus 5 TPU Slim Case Transparent Clear (OP5-001)\n$13.49\nstaples\nExian OnePlus One Leather Wallet Case with Screen Protector, Hot Pink\n$19.99\nstaples\nExian OnePlus One Screen Protectors x2 & TPU Transparent Case, Pink\n$9.99\nstaples\nExian OnePlus One Leather Wallet Case with Screen Protector, Black\n$19.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Gunmetal Carbon Fiber (7LONEPLUS5TGMT)\n$13.99\nstaples\nExian OnePlus One Leather Wallet Case with Screen Protector, Green\n$19.99\nstaples\nExian OnePlus One Screen Protectors x2 & TPU Transparent Case, Blue\n$9.99\nstaples\nExian One Plus 5 Armored Case with Stand, Black (OP5-002)\n$18.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Light Redwood (7LONEPLUS5TLRD)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Zebra (7LONEPLUS5TZBR)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Redwood (7LONEPLUS5TRDW)\n$13.99\nstaples\nExian One Plus 5 Tempered Glass Screen Protector Clear (TG-OP5)\n$18.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Black Carbon Fiber (7LONEPLUS5TBLC)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Red (7LONEPLUS5TRED)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Stealth Camo (7LONEPLUS5TCMO)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Black (7LONEPLUS5TBLK)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Concrete (7LONEPLUS5TCCR)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Ebony (7LONEPLUS5TEBY)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Pink (7LONEPLUS5TPNK)\n$13.99\nstaples\nExian OnePlus One Leather Wallet Case with Screen Protector, Pink\n$19.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Black Viper (7LONEPLUS5TVPR)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, White (7LONEPLUS5TWHT)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, White Marble (7LONEPLUS5TMBL)\n$13.99\nstaples\n7 Layer Skinz Custom Skin Wrap for OnePlus 5T, Blue (7LONEPLUS5TBLU)\n$13.99\nstaples\nExian One Plus One Screen Protector, 2 Pieces,Clear\n$9.99\nstaples\nExian One Plus One Screen Protector, 2 Pieces, Anti Glare\n$9.99\nstaples";
+
+var beyblade = "Beyblade Burst Turbo Slingshock Master Set - R Exclusiv\n29.9\ntoysrus\nBeyblade Burst Turbo Championship Clash Battle League Set - R Exclusiv\n89.9\ntoysrus\nBeyblade Burst Evolution Ultimate Tournament Collection Tops and Beystadium - Exclusive - R Exclusiv\n99.9\ntoysrus\nBeyblade Burst Evolution Dual Pack Dragoon Storm and Dranzer \n19.9\ntoysrus\nBeyblade Burst Rise Hypersphere Dual Pack Rock Dragon D5 and Ogre O\n19.9\ntoysrus\nBeyblade Burst Turbo SwitchStrike Turbo Valtryek V3 Starter Pac\n19.9\ntoysrus\nBeyblade Burst Turbo Slingshock Riptide Blast Se\n29.9\ntoysrus\nBeyblade Burst Turbo Slingshock Hazard Kerbeus K4 Starter Pac\n14.9\ntoysrus\nBeyblade Burst Turbo Slingshock Single Top Lightning-X Istros I\n10.9\ntoysrus\nBeyblade Burst Turbo SwitchStrike Hades H3 Starter Pac\n19.9\ntoysrus\nBeyblade Burst Evolution Single Top Pack Valtryek V\n10.9\ntoysrus\nBeyblade Burst Slingshock Rip Fire Starter Pack Forneus F\n19.9\ntoysrus\nBeyblade Burst Rise Hypersphere Air Knight K5 Single Pac\n10.9\ntoysrus\nBeyblade Burst Turbo Slingshock Starter Pack Top and Launcher Turbo Spryzen s\n14.9\ntoysrus\nBeyblade Burst Rise Hypersphere Vertical Drop Battle Se\n49.9\ntoysrus\nBeyblade Burst Turbo Slingshock Dual Pack Spiral Treptune T4, Lava-X Anubion A\n19.9\ntoysrus\nBeyblade Burst Rise Hypersphere Solar Sphinx S5 Single Pac\n10.9\ntoysrus\nBeyblade Burst Evolution - SwitchStrike Starter Pack Doomscizor D\n19.9\ntoysrus\nBeyblade Burst Turbo Slingshock Single Top Poison-X Hyrus H\n10.9\ntoysrus\nBeyblade Burst Rise Hypersphere Rudr R5 Single Pac\n10.9\ntoysrus\nBeyblade Burst Turbo Slingshock Cross Collision Battle Se\n79.9\ntoysrus\nBeyblade Burst Slingshock Rip Fire Starter Pack Z Achilles A\n19.9\ntoysrus\nBeyblade Burst Turbo Slingshock Beystadium - Stadium with Rail Syste\n16.9\ntoysrus\nBeyblade Burst Turbo Slingshock Starter Pack Top and Launcher Perfect Phoenix P\n14.9\ntoysrus\nBeyblade Burst Evolution Season 2 Starter Pack\n19.99\nmastermindtoys\nBeyblade Single Tops\n4.99\nmastermindtoys\nBeyblade Burst Triangle Beystadium\n29.99\nmastermindtoys\nBeyblade Burst Turbo Slingshock Starter Pack\n17.99\nmastermindtoys\nBeyblade Burst Evolution Dual Pack\n59.99\nmastermindtoys\nBeyblade Burst Turbo Slingshock Precision Strike L...\n12.99\nmastermindtoys\nBeyblade Burst Turbo Slingshock Single Top\n19.99\nmastermindtoys\nBeyblade Burst Turbo Slingshock Rip Fire Pack\n6.99\nmastermindtoys\nBeyblade Burst Turbo Slingshock Cross Collision Ba...\n49.99\nmastermindtoys\nBeyblade Burst Rise Hypersphere Starter Pack\n49.99\nmastermindtoys\nBeyblade Burst Rise Hypersphere Dual Pack\n22.99\nmastermindtoys\nBeyblade Burst Rise Hypersphere Single Pack\n49.99\nmastermindtoys\nBeyblade Burst Rise Hypersphere Vertical Drop Batt...\n6.99\nmastermindtoys\nMICKE\n$99.00\nikea\nKALLAX\n$210.00\nikea\nLACK\n$15.99\nikea\nBILLY\n$55.00\nikea\nALEX\n$99.00\nikea\nNORDMELA\n$129.00\nikea\nSTUVA / FRITIDS\n$84.00\nikea\nHEMNES\n$399.00\nikea\nBEKVÄM\n$6.99\nikea\nRYET\n$1.29\nikea";
+
+// $(document).ready(function () {
+// postData(sessionStorage.myValue);
+// });
+
 
 function initMap() {
   var nothardcoded = new google.maps.LatLng(43.2609,-74.9192);
@@ -183,8 +198,17 @@ function initMap() {
             //   title: "Current Location",
             //   animation: google.maps.Animation.DROP
             // });
-            
+            if(sessionStorage.myValue != null){
+              if(sessionStorage.myValue.indexOf("doritos") >= 0){
+                searchText(doritos);
+              }else if(document.getElementById('search').value.indexOf("beyblade") >= 0){
+                searchText(beyblade);
+              }else if(document.getElementById('search').value.indexOf("onePlus") >= 0){
+                searchText(onePlus);
+              }else {
             search(sessionStorage.myValue, map.center);
+          }
+          }
           });
   }
 
@@ -204,15 +228,24 @@ function search(loca, currentLoca){
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
-      var place = new google.maps.Marker({
-      position: results[i].geometry.location,
-      map: map,
-      animation: google.maps.Animation.DROP
-  });
-      markers.push(place);
-      places.push(results[i]);
+      if(!places.includes(results[i])){
+        var place = new google.maps.Marker({
+        position: results[i].geometry.location,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: results[i].name,
+         });
+        markers.push(place);
+        places.push(results[i]);
+        console.log(results[i].geometry.location.lat);
+      }
     }
-    addToList(places);
+    for(var i = 0; i < markers.length; i++){
+      // markers[i].addListener('click', function(){
+      //   markerZoom(markers[i]);
+      // });
+    }
+    // addToList(places);
   }
 }
 
@@ -223,9 +256,33 @@ function addToList(places){
       var li = document.createElement("li");
       li.setAttribute('id',candidate);
       li.appendChild(document.createTextNode(candidate));
-      li.appendChild(document.createTextNode("Price: $"));
+      // li.appendChild(document.createTextNode(" Price: $"));
       ul.appendChild(li);
     }
+}
+
+function addToListText(data){
+  var ul = document.getElementById("dylist");
+  for(var i = 0; i <data.length; i += 3){
+    var detail = data[i];
+    var price = data[i+1];
+    var store = data[i+2];
+    items.push(detail);
+    if(!stores.includes(store)){
+      stores.push(store);
+    }
+      var li = document.createElement("li");
+      li.setAttribute('id',detail);
+      li.appendChild(document.createTextNode(detail + " - " + price));
+      li.appendChild(document.createElement("br"));
+      li.appendChild(document.createTextNode(store));
+      ul.appendChild(li);
+  
+  }
+
+  for(var i = 0; i < stores.length; i++){
+    search(stores[i], map.center);
+  }
 }
 
 function searchAgain(){
@@ -233,14 +290,37 @@ function searchAgain(){
   markers=[];
   
   var ul = document.getElementById("dylist");
-  for(var i = 0; i < places.length; i++){
-    var candidate = places[i].name;
+  // for(var i = 0; i < places.length; i++){
+  //   var candidate = places[i].name;
+  //   var item = document.getElementById(candidate);
+  //   ul.removeChild(item);
+  // }
+
+  stores = [];
+  for(var i = 0; i < items.length; i++){
+    var candidate = items[i];
     var item = document.getElementById(candidate);
     ul.removeChild(item);
   }
+  items = [];
 
   places = [];
-  search(document.getElementById('search').value, map.center);
+  if(document.getElementById('search').value.indexOf("doritos") >= 0){
+                searchText(doritos);
+              }
+              else if(document.getElementById('search').value.indexOf("beyblade") >= 0){
+                searchText(beyblade);
+              } else if(document.getElementById('search').value.indexOf("onePlus") >= 0){
+                searchText(onePlus);
+              }else {
+            search(document.getElementById('search').value, map.center);
+          }
+  // search(document.getElementById('search').value, map.center);
+}
+
+function markerZoom(marker){
+  map.setCenter(marker.getCurrentPosition());
+  map.setZoom(15);
 }
 
   function setMapOnAll(map) {
@@ -249,28 +329,49 @@ function searchAgain(){
     }
   }
 
-function postData(input) {
-    $.ajax({
-        type: "POST",
-        url: "/webcrawler.py",
-        data: { param: input },
-        success: callbackFunc
-    });
-}
+//   function readTextFile(file){
+//     var rawFile = new XMLHttpRequest();
+//     rawFile.open("GET", file, false);
+//     rawFile.onreadystatechange = function ()
+//     {
+//         if(rawFile.readyState === 4)
+//         {
+//             if(rawFile.status === 200 || rawFile.status == 0)
+//             {
+                // allText = rawFile.responseText;
+//             }
+//         }
+//     }
+//     rawFile.send(null);
+//   }
 
-function callbackFunc(response) {
-    data = response;
+function searchText(file){
+  // readTextFile(file);
+  data = file.split("\n");
+  addToListText(data);
 }
+// function postData(input) {
+//     $.ajax({
+//         type: "POST",
+//         url: "/webcrawler.py",
+//         data: { param: input },
+//         success: callbackFunc
+//     });
+// }
+
+// function callbackFunc(response) {
+//     data = response;
+// }
 
       // Retrieve
-var MongoClient = require('mongodb').MongoClient;
+// var MongoClient = require('mongodb').MongoClient;
 
-// Connect to the db
-MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
-  if(!err) {
-    console.log("We are connected");
-  }
-});
+// // Connect to the db
+// MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+//   if(!err) {
+//     console.log("We are connected");
+//   }
+// });
     </script>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB0cKOpcb9uFhKGNQOlzzr8SKwtSHt4_8&callback=initMap&libraries=places"></script>
